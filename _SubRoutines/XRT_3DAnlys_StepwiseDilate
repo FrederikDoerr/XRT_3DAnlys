@@ -69,7 +69,7 @@ function[V,R] = XRT_3DAnlys_StepwiseDilate(V,V_ROI,Opt)
 %   --------
 %   Frederik Doerr, Aug 2020 (MATLAB R2019b)
 %   frederik.doerr(at)strath.ac.uk | CMAC (http://www.cmac.ac.uk/)
-%   Github: https://github.com/frederik-d/XRT_3DAnlys
+%   https://github.com/frederik-d/XRT_3DAnlys
 % 
 %
 %   See also IMERODE, IMDILATE, IMBOTHAT, IMTOPHAT, IMCLOSE, IMOPEN,
