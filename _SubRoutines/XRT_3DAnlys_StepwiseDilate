@@ -79,12 +79,12 @@ function[V,R] = XRT_3DAnlys_StepwiseDilate(V,V_ROI,Opt)
 if ~isfield(Opt,'strel_type') 
     strel_type = 'cube';
     if ~isfield(Opt,'strel_size') 
-        Opt.strel_size = 3; % strel_size = 1 does not work
+        Opt.strel_size = 3;
     end
 else
     strel_type = Opt.strel_type;
     if ~isfield(Opt,'strel_size') 
-        Opt.strel_size = 3; % strel_size = 1 does not work
+        Opt.strel_size = 3;
     end
 end
 
