@@ -20,7 +20,7 @@ Opt.path_MAIN = fileparts(Opt.path_Mat_Demo);
 Opt.path_Mat_SR = fullfile(Opt.path_MAIN,'_SubRoutines');
 addpath(genpath(Opt.path_MAIN));
 
-Opt.path_Mat_Demo_Data = fullfile(Opt.path_MAIN,'_Demo','Data');
+Opt.path_Mat_Demo_Data = fullfile(Opt.path_MAIN,'_Demo');
 
 %% Demo 1: Two spheres
 fprintf('\n - - -\nDemo 1: Two spheres\n - - -\n')
