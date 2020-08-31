@@ -63,43 +63,53 @@ function[V,R] = XRT_3DAnlys_StepwiseDilate(V,V_ROI,Opt)
 %     xlabel x, ylabel y, zlabel z
 %     xlim(lims), ylim(lims), zlim(lims)
 %     view(3), camlight, lighting gouraud
-% 
+%
 %
 %   Author
 %   --------
 %   Frederik Doerr, Aug 2020 (MATLAB R2019b)
 %   frederik.doerr(at)strath.ac.uk | CMAC (http://www.cmac.ac.uk/)
-%   https://github.com/frederik-d/XRT_3DAnlys
-% 
+%   Github: https://github.com/frederik-d/XRT_3DAnlys
+%
 %
 %   See also IMERODE, IMDILATE, IMBOTHAT, IMTOPHAT, IMCLOSE, IMOPEN,
 %   BWMORPH, BWMORPH3, BWSKEL.
+
+%% Setup
+if ~isfield(Opt,'ExpShorthand')
+    Opt.ExpShorthand = '';
+    Opt.Print_Str = Opt.ExpShorthand;
+else
+    Opt.Print_Str = sprintf('%s - ',Opt.ExpShorthand);
+end
+
+if ~isfield(Opt,'AppShorthand')
+    Opt.AppShorthand = '';
+else
+    Opt.Print_Str = sprintf('%s%s - ',Opt.Print_Str,Opt.AppShorthand);
+end
+
+if ~isfield(Opt,'Print_Ctrl_On')
+    Opt.Print_Ctrl_On = false;
+end
+Opt.Print_Str = sprintf('%s%s:',Opt.Print_Str,mfilename());
 
 
 if ~isfield(Opt,'strel_type') 
     strel_type = 'cube';
     if ~isfield(Opt,'strel_size') 
-        Opt.strel_size = 3;
+        Opt.strel_size = 3; % strel_size = 1 does not work
     end
 else
     strel_type = Opt.strel_type;
     if ~isfield(Opt,'strel_size') 
-        Opt.strel_size = 3;
+        Opt.strel_size = 3; % strel_size = 1 does not work
     end
 end
 
 if ~isfield(Opt,'Print_Ctrl_On') 
     Opt.Print_Ctrl_On = true;
 end
-
-if ~isfield(Opt,'ExpShorthand') 
-    Opt.ExpShorthand = '';
-end
-
-if ~isfield(Opt,'AppShorthand') 
-    Opt.AppShorthand = mfilename();
-end
-
 
 % Pass options to return structure
 R = Opt;
@@ -115,7 +125,7 @@ switch lower(Opt.method)
             V(~V_ROI) = 0;
 
             if Opt.Print_Ctrl_On
-                fprintf('%s - %s - %s - Step %.0f/%.0f \n',Opt.ExpShorthand,Opt.AppShorthand,Opt.method,k, Opt.numDilationSteps)
+                fprintf('%s %s - Step %.0f/%.0f \n',Opt.Print_Str,Opt.method,k, Opt.numDilationSteps)
             end
         end
 
@@ -143,12 +153,13 @@ switch lower(Opt.method)
             L(~V_ROI) = 0;
 
             if Opt.Print_Ctrl_On
-                fprintf('%s - %s - %s: Step %.0f/%.0f \n',Opt.ExpShorthand,Opt.AppShorthand,Opt.method,k,Opt.numDilationSteps)   
+                fprintf('%s %s - Step %.0f/%.0f \n',Opt.Print_Str,Opt.method,k,Opt.numDilationSteps)   
             end
         end
         V = L > 0;
         R.Gap_Detect = Gap_Detect;
 
     otherwise
-        fprintf('%s - %s: %s NOT defined!\n',Opt.ExpShorthand,Opt.AppShorthand,Opt.method)   
+        warning('%s %s NOT defined!\n',Opt.Print_Str,Opt.method)   
 end
+
