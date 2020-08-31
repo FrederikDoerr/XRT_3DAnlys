@@ -2,13 +2,25 @@
 % Code written by Frederik Doerr, Aug 2020 (MATLAB R2019b)
 % Application: Demo for XRT_3DAnlys_StepwiseDilate
 % 
-% frederik.doerr(at)strath.ac.uk | CMAC (http://www.cmac.ac.uk/)
-% https://github.com/frederik-d/XRT_3DAnlys
-
+% https://github.com/frederik-d
+% Contact: frederik.doerr(at)strath.ac.uk | CMAC (http://www.cmac.ac.uk/)
 
 clear all
 close all
 clc
+
+%% Setup
+set(0,'DefaultFigureVisible','on');
+
+% Folder locations
+path = matlab.desktop.editor.getActiveFilename;
+[Opt.path_Mat_Demo,name,ext] = fileparts(path);
+
+Opt.path_MAIN = fileparts(Opt.path_Mat_Demo);
+Opt.path_Mat_SR = fullfile(Opt.path_MAIN,'_SubRoutines');
+addpath(genpath(Opt.path_MAIN));
+
+Opt.path_Mat_Demo_Data = fullfile(Opt.path_MAIN,'_Demo');
 
 %% Create an example V
 center1 = 40;
@@ -75,3 +87,5 @@ figure, isosurface(x,y,z,V_thi,0.5), axis equal, title('BW')
 xlabel x, ylabel y, zlabel z
 xlim(lims), ylim(lims), zlim(lims)
 view(3), camlight, lighting gouraud
+
+
