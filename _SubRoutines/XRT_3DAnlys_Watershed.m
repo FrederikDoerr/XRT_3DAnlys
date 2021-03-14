@@ -1,5 +1,5 @@
 function [V,R] = XRT_3DAnlys_Watershed(V,Opt)
-%Marker-Supported Watershed transformation.
+%XRT_3DAnlys_Watershed Marker-Supported Watershed transformation.
 %   [V,R] = XRT_3DAnlys_Watershed(V,Opt) computes a distance map and
 %   local logic markers to guide watershed transformation the V.
 %
@@ -11,7 +11,7 @@ function [V,R] = XRT_3DAnlys_Watershed(V,Opt)
 %      'R_Ctrl_On'          Return image data of foreground marker 
 %                           (marker_Img), distance map (D_Img) and 
 %                           watershed lines (L_Img),(default: false)
-%      'Print_Ctrl_On'      Enable fprintf outputs to monitor/record
+%      'Print_Log_On'      Enable fprintf outputs to monitor/record
 %                           progress (default: true)
 %      'ExpShorthand'       Sample ID (default: '')
 %      'AppShorthand'       Application ID (default: mfilename())
@@ -36,7 +36,7 @@ function [V,R] = XRT_3DAnlys_Watershed(V,Opt)
 %       view(3), camlight, lighting gouraud
 %
 %   Watershed Segmentation
-%       Opt_Watershed.Print_Ctrl_On = true;
+%       Opt_Watershed.Print_Log_On = true;
 %       Opt_Watershed.bwdist_method = 'euclidean';
 %       Opt_Watershed.imext_Size = 4;
 %       Opt_Watershed.R_Ctrl_On = true;
@@ -70,8 +70,8 @@ else
     Opt.Print_Str = sprintf('%s%s - ',Opt.Print_Str,Opt.AppShorthand);
 end
 
-if ~isfield(Opt,'Print_Ctrl_On')
-    Opt.Print_Ctrl_On = false;
+if ~isfield(Opt,'Print_Log_On')
+    Opt.Print_Log_On = false;
 end
 Opt.Print_Str = sprintf('%s%s:',Opt.Print_Str,mfilename());
 
@@ -93,14 +93,14 @@ end
 
 
 %% Start % % % % % % % % % % % % % % %
-if Opt.Print_Ctrl_On
+if Opt.Print_Log_On
     fprintf('%s INITIATED \n',Opt.Print_Str)
 end
 
 
 
 %% Distance Transformation % % % % % % % % % % % % % % % %
-if Opt.Print_Ctrl_On
+if Opt.Print_Log_On
     fprintf('%s (1) - bwdist (%s)\n',Opt.Print_Str,Opt.bwdist_method)
 end
 
@@ -109,7 +109,7 @@ D = -bwdist(~V,Opt.bwdist_method);
 
 
 %% Foreground marker in local minima % % % % % % % % % % % % % % % %
-if Opt.Print_Ctrl_On
+if Opt.Print_Log_On
     fprintf('%s (2) - imextendedmin \n',Opt.Print_Str)
 end
 
@@ -117,7 +117,7 @@ marker = imextendedmin(D,Opt.imext_Size);
 % % % % % % % %
 
 % % % % % % % % % % % % % % % %
-if Opt.Print_Ctrl_On
+if Opt.Print_Log_On
     fprintf('%s (3) - imimposemin\n',Opt.Print_Str)
 end
 
@@ -126,7 +126,7 @@ D2(~V) = Inf;
 % % % % % % % %
 
 % % % % % % % % % % % % % % % %
-if Opt.Print_Ctrl_On
+if Opt.Print_Log_On
     fprintf('%s (4) - Watershed \n',Opt.Print_Str)
 end
 
@@ -140,7 +140,7 @@ V(Ld == 0) = 0;
 if Opt.R_Ctrl_On
     min_D = min(D(:));
     max_D = 0;
-    if Opt.Print_Ctrl_On
+    if Opt.Print_Log_On
         fprintf('%s Convert D (maxDist %.2f)\n',Opt.Print_Str,abs(min_D))
     end
 
@@ -149,7 +149,7 @@ if Opt.R_Ctrl_On
 
 
     % Ld
-    if Opt.Print_Ctrl_On
+    if Opt.Print_Log_On
         fprintf('%s Convert Ld \n',Opt.Print_Str)
     end
    
@@ -166,6 +166,6 @@ end
 
 
 % % % % % % % % % % % % % % % %
-if Opt.Print_Ctrl_On
+if Opt.Print_Log_On
     fprintf('%s COMPLETED \n',Opt.Print_Str)
 end

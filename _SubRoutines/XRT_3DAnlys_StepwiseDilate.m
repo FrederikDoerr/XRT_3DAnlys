@@ -21,7 +21,7 @@ function[V,R] = XRT_3DAnlys_StepwiseDilate(V,V_ROI,Opt)
 %                           imdilate step (default: 'cube')
 %      'strel_size'         Defined structuring element size for each
 %                           imdilate step (default: 3)
-%      'Print_Ctrl_On'      Enable fprintf outputs to monitor/record
+%      'Print_Log_On'      Enable fprintf outputs to monitor/record
 %                           progress (default: true)
 %      'ExpShorthand'       Sample ID (default: '')
 %      'AppShorthand'       Application ID (default: mfilename())
@@ -56,7 +56,7 @@ function[V,R] = XRT_3DAnlys_StepwiseDilate(V,V_ROI,Opt)
 %     Opt.numDilationSteps = 10;
 %     Opt.method = '3d_bwmorph_thicken';
 %     Opt.ExpShorthand = 'Spheres (3d_bwmorph_thicken)';
-%     Opt.Print_Ctrl_On = true;
+%     Opt.Print_Log_On = true;
 %     [V_thi,~] = XRT_3DAnlys_StepwiseDilate(V,V_ROI,Opt);
 % 
 %     figure, isosurface(x,y,z,V_thi,0.5), axis equal, title('V_thi')
@@ -89,8 +89,8 @@ else
     Opt.Print_Str = sprintf('%s%s - ',Opt.Print_Str,Opt.AppShorthand);
 end
 
-if ~isfield(Opt,'Print_Ctrl_On')
-    Opt.Print_Ctrl_On = false;
+if ~isfield(Opt,'Print_Log_On')
+    Opt.Print_Log_On = false;
 end
 Opt.Print_Str = sprintf('%s%s:',Opt.Print_Str,mfilename());
 
@@ -107,8 +107,8 @@ else
     end
 end
 
-if ~isfield(Opt,'Print_Ctrl_On') 
-    Opt.Print_Ctrl_On = true;
+if ~isfield(Opt,'Print_Log_On') 
+    Opt.Print_Log_On = true;
 end
 
 % Pass options to return structure
@@ -124,7 +124,7 @@ switch lower(Opt.method)
             % Re-evaluate Dilation Step with V_ROI
             V(~V_ROI) = 0;
 
-            if Opt.Print_Ctrl_On
+            if Opt.Print_Log_On
                 fprintf('%s %s - Step %.0f/%.0f \n',Opt.Print_Str,Opt.method,k, Opt.numDilationSteps)
             end
         end
@@ -152,7 +152,7 @@ switch lower(Opt.method)
             % Re-evaluate Dilation Step with V_ROI
             L(~V_ROI) = 0;
 
-            if Opt.Print_Ctrl_On
+            if Opt.Print_Log_On
                 fprintf('%s %s - Step %.0f/%.0f \n',Opt.Print_Str,Opt.method,k,Opt.numDilationSteps)   
             end
         end

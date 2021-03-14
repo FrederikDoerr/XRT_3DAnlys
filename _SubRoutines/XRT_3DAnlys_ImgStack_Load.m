@@ -1,18 +1,18 @@
 function [V] = XRT_3DAnlys_ImgStack_Load(Opt)
-%Load image data from repository.
+%XRT_3DAnlys_ImgStack_Load Load image data from repository.
 %   [V] = XRT_3DAnlys_ImgStack_Load(Opt) function to ease the routine 
 %   loading of image data from folders.
 %   Potential to use parallel processing (Opt.pool_mode = true, see parfor)
 %
 %   OPTIONS:
 %      'path_ImgFolder'     Image folder path.
-%      'ImgFormat'          Image file format.
+%      'ImgFormat'             Image file format.
 %      'pool_mode'          Use parallel processing (parfor, default:
 %                           false)
 %      'size_VolChunks'     Define size for indvidual VolChunks during
 %                           parallel processing. Needs to be optimised
 %                           according to system specs (default: 5 GB).
-%      'Print_Ctrl_On'      Enable fprintf outputs to monitor/record
+%      'Print_Log_On'      Enable fprintf outputs to monitor/record
 %                           progress (default: false)
 %      'ExpShorthand'       Sample ID (default: '')
 %      'AppShorthand'       Application ID (default: mfilename())
@@ -41,8 +41,8 @@ else
     Opt.Print_Str = sprintf('%s%s - ',Opt.Print_Str,Opt.AppShorthand);
 end
 
-if ~isfield(Opt,'Print_Ctrl_On')
-    Opt.Print_Ctrl_On = false;
+if ~isfield(Opt,'Print_Log_On')
+    Opt.Print_Log_On = false;
 end
 Opt.Print_Str = sprintf('%s%s:',Opt.Print_Str,mfilename());
 
@@ -97,7 +97,7 @@ end
 
 
 
-if num_VolChunks > 1
+if Opt.Print_Log_On && num_VolChunks > 1
     fprintf('%s num_VolChunks %.0f\n',Opt.Print_Str,num_VolChunks)
 end
 
@@ -126,7 +126,7 @@ for iter = 1:num_VolChunks
         for k = 1:numImg_VolChunk
             I = imread(fullfile(filelist_img_VolChunk(k).folder,filelist_img_VolChunk(k).name));
             ImageV_binary(:,:,k) = I;
-            if Opt.Print_Ctrl_On
+            if Opt.Print_Log_On
                 fprintf('%s: Loaded %.0f / %.0f\n',Opt.Print_Str,k,numImg_VolChunk)
             end
         end
@@ -134,7 +134,7 @@ for iter = 1:num_VolChunks
 
     V(:,:,VolChunk_Start:VolChunk_End) = ImageV_binary;
 
-    if Opt.Print_Ctrl_On
+    if Opt.Print_Log_On
         fprintf('%s %.0f / %.0f (NumWorkers %.0f)\n',Opt.Print_Str,iter,num_VolChunks,n_worker_parfor)
     end
 end
